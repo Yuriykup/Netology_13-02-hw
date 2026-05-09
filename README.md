@@ -11,6 +11,50 @@
 
 *В качестве ответа  пришлите снимки экрана домашнего каталога пользователя с исходными и зашифрованными данными.*  
 
+---
+### ОТВЕТ на Задание 1
+
+`1.1 Устанваливаем ecryptfs-utils.`
+
+```
+sudo apt install ecryptfs-utils
+ecryptfsd --version
+```
+![Скриншот-1](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img1.png)
+
+`1.2 Создаём пользователя cryptouser`
+
+```
+sudo adduser cryptouser
+```
+![Скриншот-2](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img2.png)
+
+`1.3 Шифрование домашнего каталога пользователя cryptouser.`
+
+```
+sudo ecryptfs-migrate-home -u cryptouser
+``` 
+![Скриншот-3](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img3.png)
+
+`1.4 Создаём файлы от имени пользователя cryptouser для проверки шифрования`
+
+```
+su cryptouser
+cd /home/cryptouser
+touch 123.txt 456.txt
+```
+![Скриншот-4](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img3.png)
+
+`1.5 Проверка шифрования от локального пользователя kupriyanov`
+
+```
+ls -l /home/cryptouser
+sudo ls -l /home/cryptouser
+```
+![Скриншот-5](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img5.png)
+
+---
+
 ### Задание 2
 
 1. Установите поддержку **LUKS**.
@@ -19,6 +63,9 @@
 
 *В качестве ответа пришлите снимки экрана с поэтапным выполнением задания.*
 
+---
+
+---
 
 ## Дополнительные задания (со звёздочкой*)
 
@@ -32,3 +79,7 @@
 
 
 *В качестве ответа пришлите снимки экрана с поэтапным выполнением задания.*
+
+---
+
+---
