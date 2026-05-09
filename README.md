@@ -43,7 +43,7 @@ su cryptouser
 cd /home/cryptouser
 touch 123.txt 456.txt
 ```
-![Скриншот-4](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img3.png)
+![Скриншот-4](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img4.png)
 
 `1.5 Проверка шифрования от локального пользователя kupriyanov`
 
