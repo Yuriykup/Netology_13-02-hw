@@ -64,6 +64,112 @@ sudo ls -l /home/cryptouser
 *В качестве ответа пришлите снимки экрана с поэтапным выполнением задания.*
 
 ---
+### ОТВЕТ на Задание 2 
+
+`2.1 Устанваливаем cryptsetup`
+
+```
+sudo apt install cryptsetup -y
+cryptsetup --version
+```
+![Скриншот-21](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img21.png)
+
+`2.2 Создаём файл‑образ размером 250 МБ`
+
+```
+sudo dd if=/dev/zero of=/tmp/luks_partition.img bs=1M count=250
+
+```
+Где:
+
+- if=/dev/zero — `источник нулей для заполнения;`
+- of=/tmp/luks_partition.img — `путь к файлу‑образу;`
+- bs=1M — `размер блока в 1 МБ;`
+- count=250 — `количество блоков (итого 250 МБ).`
+
+[Скриншот-22](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img22.png)
+
+`2.3 Привязываем файл к loop‑устройству`
+
+```
+sudo losetup --find --show /tmp/luks_partition.img
+```
+[Скриншот-23](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img23.png)
+
+`2.4 Создаём таблицу разделов (GPT или MBR) и один раздел`
+
+```
+sudo fdisk /dev/loop21
+```
+[Скриншот-24](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img24.png)
+
+`2.5 Инициализируем LUKS‑контейнер на разделе`
+
+```
+sudo cryptsetup luksFormat /dev/loop21p1
+```
+[Скриншот-25](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img25.png)
+
+
+`2.6 Открываем (расшифровываем) LUKS‑раздел и присваиваем ему имя.`
+
+```
+sudo cryptsetup open /dev/loop21p1 luks_volume
+```
+[Скриншот-26](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img26.png)
+
+
+`2.7 Создаём файловую систему на расшифрованном устройстве`
+
+```
+sudo mkfs.ext4 /dev/mapper/luks_volume
+```
+
+[Скриншот-27](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img27.png)
+
+
+`2.8 Создаём точку монтирования и монтируем раздел`
+
+```
+sudo mkdir /mnt/luks_mount
+sudo mount /dev/mapper/luks_volume /mnt/luks_mount
+```
+[Скриншот-28](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img28.png)
+
+### Проверка работы
+
+`2.9 Проверка монтирования`
+
+```
+df -h | grep luks
+```
+[Скриншот-29](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img29.png)
+
+`2.10 Проверяем статус LUKS`
+
+```
+sudo cryptsetup status luks_volume
+```
+
+[Скриншот-210](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img210.png)
+
+`2.11 Создаём тестовый файл и проверяем содержимое`
+```
+echo "Это тестовый файл на зашифрованном разделе" | sudo tee /mnt/luks_mount/test-luks-ntlg.txt
+cat /mnt/luks_mount/test-luks-ntlg.txt
+```
+
+[Скриншот-211](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img211.png)
+
+### Размонтирование и закрытие LUKS‑раздела
+
+`2.12 Размонтирование и закрытие LUKS‑раздела (завершение работы)`
+```
+sudo umount /mnt/luks_mount
+sudo cryptsetup close luks_volume
+```
+
+[Скриншот-212](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img212.png)
 
 ---
 
