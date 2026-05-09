@@ -187,5 +187,74 @@ sudo cryptsetup close luks_volume
 *В качестве ответа пришлите снимки экрана с поэтапным выполнением задания.*
 
 ---
+### ОТВЕТ на Задание 3
+
+`3.1 Устанавливаем AppArmor`
+
+```
+sudo apt install apparmor apparmor-utils -y
+sudo aa-status
+``` 
+![Скриншот-31](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img31.png)
+
+### Замена программы
+
+`3.2 Создаём тестовую замену для Ping`
+
+```
+sudo vim /usr/local/bin/fake_ping
+```
+` Пишем минипрограмму
+#!/bin/bash
+echo "Это поддельная команда ping!"
+echo "Аргументы: $@"`
+
+![Скриншот-32](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img32.png)
+
+
+`3.3 Делаем файл минипрограммы исполняемым`
+
+```
+sudo chmod +x /usr/local/bin/fake_ping
+```
+![Скриншот-33](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img33.png)
+
+`3.4 Копируем оригиналный Ping для восстановления`
+
+```
+sudo mv /bin/ping /bin/ping.original
+```
+
+![Скриншот-34](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img34.png)
+
+`3.5 Создадим символическую ссылку на нашу поддельную версию`
+
+```
+sudo ln -s /usr/local/bin/fake_ping /bin/ping
+```
+
+`3.6 Проверяем замену`
+
+```
+ping -c 3 8.8.8.8
+```
+![Скриншот-35](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img35.png)
+
+### Отключение и полное удаление 
+
+`3.7 Остановка службы и восстановление оригинального Ping`
+
+```
+sudo service apparmor stop
+```
+![Скриншот-36](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img36.png)
+
+`3.8 Проверка восстановления Ping`
+
+```
+ping -c 3 8.8.8.8
+```
+
+![Скриншот-37](https://github.com/Yuriykup/Netology_13-02-hw/blob/main/img/img37.png)
 
 ---
